@@ -16,7 +16,7 @@
  :  You should have received a copy of the GNU General Public License
  :  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  :)
-xquery version "1.0";
+xquery version "3.0";
 
 import module namespace file="http://exist-db.org/xquery/file" at "java:org.exist.xquery.modules.file.FileModule";
 import module namespace apputil="http://exist-db.org/apps/eXide/apputil" at "util.xqm";
@@ -43,7 +43,7 @@ declare function local:format-output($output) {
 };
 
 let $startParam := request:get-parameter("start", ())
-let $startTime := if (empty($startParam) or $startParam eq "") then () else $startParam 
+let $startTime := map{'prune': false(), 'after': xs:dateTime(if (empty($startParam) or $startParam eq "") then () else $startParam)} 
 let $collection := request:get-parameter("collection", ())
 let $dir := request:get-parameter("dir", apputil:get-info-from-descriptor($collection)/workingDir/string())
 let $output := file:sync($collection, $dir, $startTime)
